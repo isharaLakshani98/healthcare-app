@@ -109,6 +109,7 @@ const AllEmployees = () => {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [opendlt, setOpendlt] = React.useState(false);
     const [employees, setEmployees] = React.useState([]);
+    const [employeeData, setEmployeeData] = React.useState([]);
     const [selectedItem, setSelectedItem] = React.useState("");
     const [rows, setRows] = useState([]);
     const [allCount, setAllCount] = React.useState(
@@ -121,6 +122,7 @@ const AllEmployees = () => {
     );
     const [successMsg, setSuccessMsg] = useState(false);
     const [openModal, setOpenModal] = React.useState(false);
+    const [openModalEmployee, setOpenModalEmployee] = React.useState(false);
     const [searched, setSearched] = useState("");
 
     const options = {
@@ -255,14 +257,23 @@ const AllEmployees = () => {
         setPage(0);
     };
 
-    const handleOpenModal = () => {
+    const handleOpenModal = (row) => {
         setOpenModal(true);
         // console.log(row);
-
     };
     
     const handleCloseModal = () => {
         setOpenModal(false);
+    };
+
+    const handleOpenModalEmployee = (row) => {
+        setOpenModalEmployee(true);
+        console.log(row);
+        setEmployeeData(row);
+    };
+    
+    const handleCloseModalEmployee = () => {
+        setOpenModalEmployee(false);
     };
 
     const modalBody = (
@@ -279,9 +290,9 @@ const AllEmployees = () => {
                         <Table className={classes.table} aria-label="simple table">
                         <TableBody>
                                     <TableRow component={Paper} className={classes.paper}>
-                                        <TableCell component="th" className={classes.tableth} style={{ width: 200 }}>
+                                        {/* <TableCell component="th" className={classes.tableth} style={{ width: 200 }}>
                                             Employee ID
-                                        </TableCell>
+                                        </TableCell> */}
                                         <TableCell component="th" className={classes.tableth}>
                                             Full Name
                                         </TableCell>
@@ -298,9 +309,9 @@ const AllEmployees = () => {
                                     {employees.map((row) => (
                                         <>
                                         <TableRow key={row.name} className={classes.tableRow}>
-                                            <TableCell component="th" scope="row" style={{ width: 200 }}>
+                                            {/* <TableCell component="th" scope="row" style={{ width: 200 }}>
                                                 {row._id}
-                                            </TableCell>
+                                            </TableCell> */}
                                             <TableCell align="left">
                                                 {row.firstName} {row.lastName}
                                             </TableCell>
@@ -342,6 +353,51 @@ const AllEmployees = () => {
                     </Grid>
                 </div>
                 <Pdf targetRef={refPrint} filename={"All Employees Report.pdf"} options={options} scale="0.9">
+                    {({toPdf}) => (
+                        <Button onClick={toPdf} variant="contained" className={classes.dialogBtnBlue} startIcon={<GetAppIcon />}>Download Report</Button>
+                    )}
+                </Pdf> 
+            </div>
+        </Fade>
+    );
+
+    const modalBodyEmployee = (
+        <Fade in={openModalEmployee}>
+            <div>
+                <div ref={refPrint}>
+                    <Grid container spacing={3} className={classes.modelPaper}>
+                        <Grid item xs={12}>
+                            <Paper className={classes.paperTitle}>
+                                <Typography variant="h6" id="transition-modal-title" className={classes.pageTitle}>Employee Report</Typography>
+                            </Paper>
+                            <table className={classes.table}>
+                                {/* <tr style={{ fontSize: "18px", color: "#0077B6" }}>
+                                    <td className={classes.trReport}>Report ID</td>
+                                    <td className={classes.trReport}>{employeeData._id}</td>
+                                </tr> */}
+                                <tr>
+                                    <td className={classes.trReport} style={{ fontWeight: 600 }}>Full Name</td>
+                                    <td>{employeeData.firstName} {employeeData.lastName}</td>
+                                    <td className={classes.trReport}>Gender</td>
+                                    <td>{employeeData.gender}</td>
+                                </tr>
+                                <tr>
+                                    <td className={classes.trReport}>Email</td>
+                                    <td>{employeeData.email}</td>
+                                    <td className={classes.trReport}>Mobile Number</td>
+                                    <td>{employeeData.mobile}</td>
+                                </tr>
+                                <tr>
+                                    <td className={classes.trReport}>Date of Birth</td>
+                                    <td>{employeeData.dob}</td>
+                                    <td className={classes.trReport}>Date Collected</td>
+                                    <td>{employeeData.datecollected}</td>
+                                </tr>
+                            </table>
+                        </Grid>
+                    </Grid>
+                </div>
+                <Pdf targetRef={refPrint} filename={employeeData._id + " employee report.pdf"}>
                     {({toPdf}) => (
                         <Button onClick={toPdf} variant="contained" className={classes.dialogBtnBlue} startIcon={<GetAppIcon />}>Download Report</Button>
                     )}
@@ -399,9 +455,9 @@ const AllEmployees = () => {
                             <Table className={classes.table}>
                                 <TableBody>
                                     <TableRow component={Paper} className={classes.paper}>
-                                        <TableCell component="th" className={classes.tableth} style={{ width: 200 }}>
+                                        {/* <TableCell component="th" className={classes.tableth} style={{ width: 200 }}>
                                             Employee ID
-                                        </TableCell>
+                                        </TableCell> */}
                                         <TableCell component="th" className={classes.tableth}>
                                             Full Name
                                         </TableCell>
@@ -424,9 +480,9 @@ const AllEmployees = () => {
                                     ).map((row) => (
                                         <>
                                         <TableRow key={row.name} className={classes.tableRow}>
-                                            <TableCell component="th" scope="row" style={{ width: 200 }}>
+                                            {/* <TableCell component="th" scope="row" style={{ width: 200 }}>
                                                 {row._id}
-                                            </TableCell>
+                                            </TableCell> */}
                                             <TableCell align="left">
                                                 {row.firstName} {row.lastName}
                                             </TableCell>
@@ -440,8 +496,11 @@ const AllEmployees = () => {
                                                 {row.mobile}
                                             </TableCell>
                                             <TableCell align="left">
+                                                <Button variant="contained" color="secondary" className={classes.tableBtn} onClick={() => handleOpenModalEmployee(row)}>
+                                                    View
+                                                </Button>
                                                 <Button variant="contained" color="secondary" className={classes.tableBtn}>
-                                                    Message
+                                                    Edit
                                                 </Button>
                                                 <Button variant="contained" className={classes.tableBtnRed} onClick={() => handleClickOpen(row)}>
                                                     Remove
@@ -523,6 +582,20 @@ const AllEmployees = () => {
                 }}
             >
                {modalBody}
+            </Modal>
+            <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                className={classes.modal}
+                open={openModalEmployee}
+                onClose={handleCloseModalEmployee}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                timeout: 500,
+                }}
+            >
+               {modalBodyEmployee}
             </Modal>
         </div>
     )

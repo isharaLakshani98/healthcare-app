@@ -21,16 +21,35 @@ router.post('/', async(req, res) => {
     if (emailExist) return res.status(400).send('Email already exists');
 
     //Generate Password
-    var password = generator.generate({
-        length: 8,
-        numbers: true
+    // var password = generator.generate({
+    //     length: 8,
+    //     numbers: true
+    // });
+
+    // //Generate ID
+    // var empID = generator.generate({
+    //     length: 4,
+    //     numbers: true
+    // });
+    var empID = 0;
+    var query = Employee.find();
+    
+    query.count(function (err, count) {
+        if (err) console.log(err)
+        else {
+            console.log("Count is", count);
+            empID = count + 1;
+        }
     });
+
+    var password = "12345678";
 
     //Hash passwords
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const employee = new Employee({
+        empID: empID,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
