@@ -14,7 +14,7 @@ app.use(express.json());
 const employeeRoute = require('./Routes/employee.route');
 const labreportsRoute = require('./Routes/labreports.route');
 const empPaymentRoute = require('./Routes/empPayments.route');
-// const authRoute = require('./Routes/auth.route');
+const authRoute = require('./Routes/auth.route');
 const appointmentRoute = require('./Routes/appointment.route');
 
 //Route Middlewares

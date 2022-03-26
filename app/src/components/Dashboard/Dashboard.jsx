@@ -63,7 +63,7 @@ const Dashboard = ({ setPathName }) => {
                             <Grid item xs={12}>
                                 <ReactFitText compressor={1.8} >
                                     <div className={classes.clock}>
-                                        <Clock interval={1000} ticking={true} format={'dddd, MMMM Mo, YYYY'} timezone={"Australia/Sydney"} />
+                                        <Clock interval={1000} ticking={true} format={'dddd, MMMM Do, YYYY'} timezone={"Australia/Sydney"} />
                                     </div>
                                 </ReactFitText>
                             </Grid>
