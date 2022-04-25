@@ -53,7 +53,7 @@ const Dashboard = ({ setPathName }) => {
                     <Paper className={classes.paper} style={{ backgroundColor: "#023E8A", color: "#ffffff" }}>
                         <Grid container  direction="row" justifyContent="center" alignItems="center" spacing={3}>
                             <img src={logo} className={classes.logo} />
-                            <Typography variant="h2" className={classes.pageTitle}>24Seven hospital management system</Typography>
+                            <Typography variant="h2" className={classes.pageTitle}> hospital management system for healthcare hospital</Typography>
                         </Grid>
                     </Paper>
                 </Grid>

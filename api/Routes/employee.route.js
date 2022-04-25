@@ -21,16 +21,12 @@ router.post('/', async(req, res) => {
     if (emailExist) return res.status(400).send('Email already exists');
 
     //Generate Password
+
     // var password = generator.generate({
     //     length: 8,
     //     numbers: true
     // });
 
-    // //Generate ID
-    // var empID = generator.generate({
-    //     length: 4,
-    //     numbers: true
-    // });
     var empID = 0;
     var query = Employee.find();
     

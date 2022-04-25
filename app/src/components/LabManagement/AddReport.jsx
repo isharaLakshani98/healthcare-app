@@ -7,6 +7,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axios from 'axios';
+import addMonths from 'date-fns/addMonths';
+import format from 'date-fns/format';
 
 import DateRangeIcon from '@material-ui/icons/DateRange';
 
@@ -19,7 +21,7 @@ function Alert(props) {
 const schema = yup.object().shape({
     fullname: yup.string().required("Patient Name is required."),
     email: yup.string().email("Enter a valid Email."),
-    mobile: yup.string().required("Mobile Number is required.").max(10, "Mobile Number cannot exceed 10 characters."),
+    mobile: yup.number().typeError('Enter a valid number').required("Mobile Number is required.").max(10, "Mobile Number cannot exceed 10 characters."),
     dob: yup.string().required("Date of Birth is required."),
     datecollected: yup.string().required("Date Collected is required."),
     hemoglobin: yup.number().typeError('You must enter a number').required(),
@@ -54,6 +56,10 @@ const AddReport = () => {
     const [successMsg, setSuccessMsg] = useState(false);
     const [formData, setFormData] = useState([]);
     const isFirstRender = useRef(true);
+    const [eventDate, setEventDate] = useState(format(new Date(), "yyyy-MM-dd"));
+    const maxDate = format(addMonths(new Date(), 3), "yyyy-MM-dd");
+    
+    console.log(maxDate);
 
     const CssTextField = withStyles({
         root: {
@@ -245,6 +251,8 @@ const AddReport = () => {
                                                     type="date"
                                                     variant="outlined"
                                                     color="primary"
+                                                    max={maxDate}
+                                                    value={eventDate}
                                                     {...field}
                                                     InputLabelProps={{
                                                         shrink: true,
