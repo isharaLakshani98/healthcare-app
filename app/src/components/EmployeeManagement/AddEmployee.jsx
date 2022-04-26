@@ -8,6 +8,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axios from 'axios';
+import moment from 'moment';
 
 import DateRangeIcon from '@material-ui/icons/DateRange';
 
@@ -67,9 +68,9 @@ const schema = yup.object().shape({
     firstName: yup.string().required("First Name is required."),
     lastName: yup.string().required("Last Name is required."),
     email: yup.string().required("Email is required.").email("Enter a valid Email."),
-    mobile: yup.string().required("Mobile Number is required.").max(10, "Mobile Number cannot exceed 10 characters."),
+    mobile: yup.number().typeError('Enter a valid number.').required("Mobile Number is required."),
     address1: yup.string().required("Address is required."),
-    dob: yup.string().required("Date of Birth is required."),
+    dob: yup.date().max(moment().add(1,"m").toDate(), "Future Date not Allowed.").required("Date of Birth is required.").typeError("Invalid Date"),
     position: yup.string().required("Position is required."),
     hiredate: yup.string().required("Hire Date is required."),
 });
