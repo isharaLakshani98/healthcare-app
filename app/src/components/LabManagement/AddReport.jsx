@@ -9,6 +9,7 @@ import * as yup from 'yup';
 import axios from 'axios';
 import addMonths from 'date-fns/addMonths';
 import format from 'date-fns/format';
+import moment from "moment";
 
 import DateRangeIcon from '@material-ui/icons/DateRange';
 
@@ -22,8 +23,8 @@ const schema = yup.object().shape({
     fullname: yup.string().required("Patient Name is required."),
     email: yup.string().email("Enter a valid Email."),
     mobile: yup.number().typeError('Enter a valid number').required("Mobile Number is required.").max(10, "Mobile Number cannot exceed 10 characters."),
-    dob: yup.string().required("Date of Birth is required."),
-    datecollected: yup.string().required("Date Collected is required."),
+    dob: yup.date().max(moment().add(1, "m").toDate(), "Future date not allowed").required("Date of Birth is required.").typeError("Invalid Date"),
+    datecollected: yup.date().max(moment().add(1, "m").toDate(), "Future date not allowed").min(new Date(Date.now() -2678400000), "Date cannot be in the past").required("Date Collected is required.").typeError("Invalid Date"),
     hemoglobin: yup.number().typeError('You must enter a number').required(),
     rbc: yup.number().typeError('You must enter a number'),
     hct: yup.number().typeError('You must enter a number'),
@@ -56,10 +57,7 @@ const AddReport = () => {
     const [successMsg, setSuccessMsg] = useState(false);
     const [formData, setFormData] = useState([]);
     const isFirstRender = useRef(true);
-    const [eventDate, setEventDate] = useState(format(new Date(), "yyyy-MM-dd"));
-    const maxDate = format(addMonths(new Date(), 3), "yyyy-MM-dd");
-    
-    console.log(maxDate);
+    const maxDate = format(new Date(), "yyyy-MM-dd");
 
     const CssTextField = withStyles({
         root: {
@@ -252,7 +250,6 @@ const AddReport = () => {
                                                     variant="outlined"
                                                     color="primary"
                                                     max={maxDate}
-                                                    value={eventDate}
                                                     {...field}
                                                     InputLabelProps={{
                                                         shrink: true,
