@@ -1,15 +1,29 @@
 const router = require('express').Router();
 const LabReports = require('../Models/LabReports');
 
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
 router.post('/', async(req, res) => {
 
     const labReports = new LabReports({
         fullname: req.body.fullname,
         email: req.body.email,
         mobile: req.body.mobile,
-        dob: req.body.dob,
+        dob: formatDate(req.body.dob),
         gender: req.body.gender,
-        datecollected: req.body.datecollected,
+        datecollected: formatDate(req.body.datecollected),
         hemoglobin: req.body.hemoglobin,
         rbc: req.body.rbc,
         hct: req.body.hct,

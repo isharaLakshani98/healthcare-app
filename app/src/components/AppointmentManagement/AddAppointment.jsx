@@ -9,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axios from 'axios';
 
+
 import DateRangeIcon from '@material-ui/icons/DateRange';
 
 import useStyles from './styles';
@@ -71,11 +72,16 @@ const apptime = [
     },
 ];
 
+
+
 const schema = yup.object().shape({
     firstName: yup.string().required("First Name is required."),
     lastName: yup.string().required("Last Name is required."),
     email: yup.string().required("Email is required.").email("Enter a valid Email."),
-    mobile: yup.string().required("Mobile Number is required.").max(10, "Mobile Number cannot exceed 10 characters."),
+    mobile: yup.string()
+    .required("This field is Required")
+    .matches(/^\d{10}$/,"Phone number is not valid"
+    ),
     dob: yup.string().required("Date of Birth is required."),
     consultant: yup.string().required("Consultant is required."),
     appdate: yup.string().required("Appointment Date is required."),
@@ -268,7 +274,7 @@ const AddAppointment = () => {
                                             render={({ field }) => 
                                             <CssTextField 
                                             fullWidth 
-                                            label="Mobile Number" 
+                                            label="Mobile No" 
                                             variant="outlined" 
                                             color="primary" 
                                             {...field}

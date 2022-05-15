@@ -7,6 +7,11 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axios from 'axios';
+<<<<<<< Updated upstream
+=======
+import format from 'date-fns/format';
+import moment from "moment";
+>>>>>>> Stashed changes
 
 import DateRangeIcon from '@material-ui/icons/DateRange';
 
@@ -16,9 +21,11 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
+
 const schema = yup.object().shape({
     fullname: yup.string().required("Patient Name is required."),
     email: yup.string().email("Enter a valid Email."),
+<<<<<<< Updated upstream
     mobile: yup.string().required("Mobile Number is required.").max(10, "Mobile Number cannot exceed 10 characters."),
     dob: yup.string().required("Date of Birth is required."),
     datecollected: yup.string().required("Date Collected is required."),
@@ -40,6 +47,66 @@ const schema = yup.object().shape({
     gra: yup.number().typeError('You must enter a number'),
     plt: yup.number().typeError('You must enter a number'),
     esr: yup.number().typeError('You must enter a number'),
+=======
+    mobile: yup.string().matches(/^([+]\d{2})?\d{10}$/, "That doesn't look like a phone number"),
+    // mobile: yup.number().typeError('Enter a valid number').required("Mobile Number is required.").max(10, "Mobile Number cannot exceed 10 characters.").min(8, 'Enter a valid number'),
+    dob: yup.date().max(moment().add(1, "m").toDate(), "Future date not allowed").required("Date of Birth is required.").typeError("That doesn't look like a date"),
+    datecollected: yup.date().max(moment().add(1, "m").toDate(), "Future date not allowed").min(new Date(Date.now() -2678400000), "Date cannot be in the past").required("Date Collected is required.").typeError("That doesn't look like a date"),
+    hemoglobin: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number').required("This field is required."),
+    rbc: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number').required("This field is required."),
+    plt: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number').required("This field is required."),
+    wbc: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number').required("This field is required."),
+    hct: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number').required("This field is required."),
+    mcv: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number'),
+    mch: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number'),
+    mchc: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number'),
+    rdwcv: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number'),
+    rdwsd: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number'),
+    neu: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number'),
+    lym: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number'),
+    mon: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number'),
+    eos: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number'),
+    bas: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number'),
+    lym2: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number'),
+    gra: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number'),
+    esr: yup.number().transform((currentValue, originalValue) => {
+        return originalValue === '' ? null : currentValue;
+    }).nullable().typeError('You must enter a number'),
+>>>>>>> Stashed changes
 });
 
 const AddReport = () => {
@@ -50,10 +117,15 @@ const AddReport = () => {
             reValidateMode: 'onSubmit',
         }
     );
-    const [gender, setGender] = useState("");
+    const [gender, setGender] = useState("male");
     const [successMsg, setSuccessMsg] = useState(false);
     const [formData, setFormData] = useState([]);
     const isFirstRender = useRef(true);
+<<<<<<< Updated upstream
+=======
+    const [eventDate, setEventDate] = useState(format(new Date(), "yyyy-MM-dd"));
+    const maxDate = format(new Date(), "yyyy-MM-dd");
+>>>>>>> Stashed changes
 
     const CssTextField = withStyles({
         root: {
@@ -273,6 +345,8 @@ const AddReport = () => {
                                                     type="date"
                                                     variant="outlined"
                                                     color="primary"
+                                                    // value={eventDate}
+                                                    // onChange={(e) => setEventDate(e.target.value)}
                                                     {...field}
                                                     InputLabelProps={{
                                                         shrink: true,
@@ -309,7 +383,7 @@ const AddReport = () => {
                                             control={control}
                                             defaultValue=""
                                             render={({ field }) => 
-                                            <CssTextField fullWidth label="Hemoglobin" variant="outlined" color="primary" {...field}  error={!!errors?.hemoglobin} helperText={errors?.hemoglobin?.message} />}
+                                            <CssTextField fullWidth label="Hemoglobin*" variant="outlined" color="primary" {...field}  error={!!errors?.hemoglobin} helperText={errors?.hemoglobin?.message} />}
                                         />
                                     </Grid>
                                     <Grid item xs={6} sm={3}>
@@ -318,7 +392,7 @@ const AddReport = () => {
                                             control={control}
                                             defaultValue=""
                                             render={({ field }) => 
-                                            <CssTextField fullWidth label="RBC" variant="outlined" color="primary" {...field} error={!!errors?.rbc} helperText={errors?.rbc?.message} />}
+                                            <CssTextField fullWidth label="RBC*" variant="outlined" color="primary" {...field} error={!!errors?.rbc} helperText={errors?.rbc?.message} />}
                                         />
                                     </Grid>
                                     <Grid item xs={6} sm={3}>
@@ -327,7 +401,7 @@ const AddReport = () => {
                                             control={control}
                                             defaultValue=""
                                             render={({ field }) => 
-                                            <CssTextField fullWidth label="HCT" variant="outlined" color="primary" {...field} error={!!errors?.hct} helperText={errors?.hct?.message} />}
+                                            <CssTextField fullWidth label="HCT*" variant="outlined" color="primary" {...field} error={!!errors?.hct} helperText={errors?.hct?.message} />}
                                         />
                                     </Grid>
                                     <Grid item xs={6} sm={3}>
@@ -381,7 +455,7 @@ const AddReport = () => {
                                             control={control}
                                             defaultValue=""
                                             render={({ field }) => 
-                                            <CssTextField fullWidth label="WBC" variant="outlined" color="primary" {...field} error={!!errors?.wbc} helperText={errors?.wbc?.message} />}
+                                            <CssTextField fullWidth label="WBC*" variant="outlined" color="primary" {...field} error={!!errors?.wbc} helperText={errors?.wbc?.message} />}
                                         />
                                     </Grid>
                                     <Grid item xs={6} sm={3}>
@@ -453,7 +527,7 @@ const AddReport = () => {
                                             control={control}
                                             defaultValue=""
                                             render={({ field }) => 
-                                            <CssTextField fullWidth label="PLT" variant="outlined" color="primary" {...field} error={!!errors?.plt} helperText={errors?.plt?.message} />}
+                                            <CssTextField fullWidth label="PLT*" variant="outlined" color="primary" {...field} error={!!errors?.plt} helperText={errors?.plt?.message} />}
                                         />
                                     </Grid>
                                     <Grid item xs={6} sm={3}>
