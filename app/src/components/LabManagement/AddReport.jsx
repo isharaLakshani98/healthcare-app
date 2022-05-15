@@ -7,11 +7,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axios from 'axios';
-<<<<<<< Updated upstream
-=======
 import format from 'date-fns/format';
 import moment from "moment";
->>>>>>> Stashed changes
 
 import DateRangeIcon from '@material-ui/icons/DateRange';
 
@@ -21,35 +18,10 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-
 const schema = yup.object().shape({
     fullname: yup.string().required("Patient Name is required."),
     email: yup.string().email("Enter a valid Email."),
-<<<<<<< Updated upstream
-    mobile: yup.string().required("Mobile Number is required.").max(10, "Mobile Number cannot exceed 10 characters."),
-    dob: yup.string().required("Date of Birth is required."),
-    datecollected: yup.string().required("Date Collected is required."),
-    hemoglobin: yup.number().typeError('You must enter a number').required(),
-    rbc: yup.number().typeError('You must enter a number'),
-    hct: yup.number().typeError('You must enter a number'),
-    mcv: yup.number().typeError('You must enter a number'),
-    mch: yup.number().typeError('You must enter a number'),
-    mchc: yup.number().typeError('You must enter a number'),
-    rdwcv: yup.number().typeError('You must enter a number'),
-    rdwsd: yup.number().typeError('You must enter a number'),
-    wbc: yup.number().typeError('You must enter a number'),
-    neu: yup.number().typeError('You must enter a number'),
-    lym: yup.number().typeError('You must enter a number'),
-    mon: yup.number().typeError('You must enter a number'),
-    eos: yup.number().typeError('You must enter a number'),
-    bas: yup.number().typeError('You must enter a number'),
-    lym2: yup.number().typeError('You must enter a number'),
-    gra: yup.number().typeError('You must enter a number'),
-    plt: yup.number().typeError('You must enter a number'),
-    esr: yup.number().typeError('You must enter a number'),
-=======
     mobile: yup.string().matches(/^([+]\d{2})?\d{10}$/, "That doesn't look like a phone number"),
-    // mobile: yup.number().typeError('Enter a valid number').required("Mobile Number is required.").max(10, "Mobile Number cannot exceed 10 characters.").min(8, 'Enter a valid number'),
     dob: yup.date().max(moment().add(1, "m").toDate(), "Future date not allowed").required("Date of Birth is required.").typeError("That doesn't look like a date"),
     datecollected: yup.date().max(moment().add(1, "m").toDate(), "Future date not allowed").min(new Date(Date.now() -2678400000), "Date cannot be in the past").required("Date Collected is required.").typeError("That doesn't look like a date"),
     hemoglobin: yup.number().transform((currentValue, originalValue) => {
@@ -106,7 +78,6 @@ const schema = yup.object().shape({
     esr: yup.number().transform((currentValue, originalValue) => {
         return originalValue === '' ? null : currentValue;
     }).nullable().typeError('You must enter a number'),
->>>>>>> Stashed changes
 });
 
 const AddReport = () => {
@@ -121,12 +92,8 @@ const AddReport = () => {
     const [successMsg, setSuccessMsg] = useState(false);
     const [formData, setFormData] = useState([]);
     const isFirstRender = useRef(true);
-<<<<<<< Updated upstream
-=======
     const [eventDate, setEventDate] = useState(format(new Date(), "yyyy-MM-dd"));
     const maxDate = format(new Date(), "yyyy-MM-dd");
->>>>>>> Stashed changes
-
     const CssTextField = withStyles({
         root: {
           '& .MuiInputLabel-root': {
@@ -317,6 +284,7 @@ const AddReport = () => {
                                                     type="date"
                                                     variant="outlined"
                                                     color="primary"
+                                                    max={maxDate}
                                                     {...field}
                                                     InputLabelProps={{
                                                         shrink: true,

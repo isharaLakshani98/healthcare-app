@@ -53,7 +53,7 @@ const Dashboard = ({ setPathName }) => {
                     <Paper className={classes.paper} style={{ backgroundColor: "#023E8A", color: "#ffffff" }}>
                         <Grid container  direction="row" justifyContent="center" alignItems="center" spacing={3}>
                             <img src={logo} className={classes.logo} />
-                            <Typography variant="h2" className={classes.pageTitle}>24Seven hospital management system</Typography>
+                            <Typography variant="h2" className={classes.pageTitle}> hospital management system for healthcare hospital</Typography>
                         </Grid>
                     </Paper>
                 </Grid>
@@ -63,7 +63,7 @@ const Dashboard = ({ setPathName }) => {
                             <Grid item xs={12}>
                                 <ReactFitText compressor={1.8} >
                                     <div className={classes.clock}>
-                                        <Clock interval={1000} ticking={true} format={'dddd, MMMM Mo, YYYY'} timezone={"Australia/Sydney"} />
+                                        <Clock interval={1000} ticking={true} format={'dddd, MMMM Do, YYYY'} timezone={"Australia/Sydney"} />
                                     </div>
                                 </ReactFitText>
                             </Grid>
