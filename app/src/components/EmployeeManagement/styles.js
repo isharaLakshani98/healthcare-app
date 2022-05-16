@@ -111,6 +111,15 @@ export default makeStyles((theme) => ({
             backgroundColor: "#023E8A",
         },
     },
+    filterbtn: {
+        color: '#ffffff',
+        padding: "15px",
+        margin: "3px",
+        backgroundColor: "#0077B6",
+        '&:hover': {
+            backgroundColor: "#005f91",
+        },
+    },
     cookieAlert: {
         width: "800px",
         color: "#0077B6",

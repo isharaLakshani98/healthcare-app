@@ -98,6 +98,25 @@ router.get('/', async(req, res) => {
     }
 });
 
+router.get('/empfind/:id', async(req, res) => {
+    try {
+        const employee = await Employee.findById(req.params.id);
+        res.json(employee);
+    } catch (err) {
+        res.json({ message: err });
+    }
+});
+
+router.put('/empupdate/:id', async(req, res) => {
+
+    try {
+        const savedEmployee = await Employee.findOneAndUpdate({ _id: req.params.id }, req.body, { useFindAndModify: false, new: true });
+        res.json(savedEmployee);
+    } catch (err) {
+        res.json({ message: err });
+    }
+});
+
 router.delete('/empdelete/:id', async(req, res) => {
 
     // try {
