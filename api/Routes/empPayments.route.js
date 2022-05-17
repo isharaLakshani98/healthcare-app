@@ -1,10 +1,11 @@
 const router = require('express').Router();
 const EmpPayment = require('../Models/EmpPayment');
+const Employee = require('../Models/Employee');
 
 router.post('/addEmpPay', async(req, res) => {
     const empPayment = new EmpPayment({
         paymentId:req.body.paymentId,
-        employeeId: req.body.employeeId,
+        employeeId: req.body.empIdNum,
         employeeType: req.body.employeeType,
         employeeName: req.body.employeeName,
         paymentAmount: req.body.paymentAmount,
@@ -19,18 +20,31 @@ router.post('/addEmpPay', async(req, res) => {
         const savedEmpPay = await empPayment.save();
         res.json(savedEmpPay);
     } catch (err) {
+        console.log(err);
+    }
+});
+
+router.get('/getEmpUserType/:id', async(req,res) => {
+    try {
+        Employee.find({empID : req.params.id}).then((result) => {
+            res.json(result);
+        }).catch((err) => {
+            console.log(err);
+        });
+    } catch (err) {
         res.json({ message: err });
     }
 });
 
+
 router.get('/viewEmpPay', async(req, res) => {
 
-    try {
-        const empPay = await EmpPayment.find();
-        res.json(empPay);
-    } catch (err) {
-        res.json({ message: err });
-    }
+ 
+    EmpPayment.find().then((result) => {
+        res.json(result);
+    }).catch((err) => {
+        console.log(err);
+    });
 });
 
 router.get('/getMaxId', async(req,res) => {

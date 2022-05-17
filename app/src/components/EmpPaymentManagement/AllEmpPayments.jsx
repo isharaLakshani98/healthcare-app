@@ -22,6 +22,9 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import axios from 'axios';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import 'jspdf-autotable';
 
 import useStyles from './styles';
 
@@ -173,13 +176,10 @@ const AllEmpPayments = () => {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, employeeFD.length - page * rowsPerPage);
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/empPay/viewEmpPay").then(res => {
-            if(res.ok){
-                return res.json()
-            }
-        }).then(jsonRes => setEmpPayments(jsonRes));
-
-    }, [])
+            axios.get('http://localhost:5000/api/empPay/viewEmpPay')
+            .then(res => setEmpPayments(res.data))
+            .catch(error => console.log(error));
+    },[]);
 
     useEffect(() => {
         setRows(empPayments)
@@ -192,6 +192,7 @@ const AllEmpPayments = () => {
         .then((res) => {
             if(res.status == 200){
                 console.log("Payment Deleted Successfully");
+                window.location.href = "/all-emp-payment";
             }
         })
         .catch((err) => {
@@ -240,6 +241,26 @@ const AllEmpPayments = () => {
     const handleCloseModal = () => {
         setOpenModal(false);
     };
+
+    const columns = [
+        { title: "Employee Name", field: "employeeName", },
+        { title: "Salary (RS.)", field: "paymentAmount", },
+        { title: "Salary Sent Date", field: "paymentDate" },
+        { title: "Job", field: "employeeType" },
+        { title: "Bank", field: 'paymentBank' },
+        { title: "Bank Account", field: "paymentAccount" }]
+
+
+    function monthlyReport(){
+        const doc = new jsPDF()
+        doc.text("Salary Report", 20, 10)
+        doc.autoTable({
+          theme: "grid",
+          columns: columns.map(col => ({ ...col, dataKey: col.field })),
+          body: empPayments
+        })
+        doc.save('Salary Report.pdf')
+    }
 
     const modalBody = (
         <Fade in={openModal}>
@@ -301,7 +322,7 @@ const AllEmpPayments = () => {
                     </Paper>
                 </Grid>
                 <Grid container spacing={3} justifyContent="flex-end" alignItems="center" style={{ padding: "12px",marginLeft:"-95px" }}>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={5}>
                         <SearchBar
                             cancelOnEscape
                             value={searched}
@@ -309,10 +330,19 @@ const AllEmpPayments = () => {
                             onCancelSearch={() => cancelSearch()}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={2}>
-                        <Button component={Link} to ="/add-emp-payment" fullWidth variant="contained" startIcon={<AddIcon />} color="secondary" className={classes.submitbtn}>
-                            Add New Employee Payment
-                        </Button>
+                    <Grid item xs={12} sm={6}>
+                        <div className="row">
+                            <div className="col">
+                                <Button component={Link} to ="/add-emp-payment"  variant="contained" startIcon={<AddIcon />} color="secondary" className={classes.submitbtn}>
+                                    Add New Employee Payment
+                                </Button>
+                            </div>
+                            <div className="col">
+                                <Button   variant="contained" onClick={monthlyReport} color="secondary" className={classes.submitbtn}>
+                                    Salary Report
+                                </Button>
+                            </div>
+                        </div>
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
