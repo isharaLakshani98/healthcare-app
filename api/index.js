@@ -16,6 +16,8 @@ const labreportsRoute = require('./Routes/labreports.route');
 const empPaymentRoute = require('./Routes/empPayments.route');
 const authRoute = require('./Routes/auth.route');
 const appointmentRoute = require('./Routes/appointment.route');
+const paymentBasedAmount = require('./Routes/paymentBasedAmount.route');
+const emp_bank_Account = require('./Routes/emp_bank_Account');
 
 //Route Middlewares
 app.use('/api/employee', employeeRoute);
@@ -23,6 +25,8 @@ app.use('/api/labreports', labreportsRoute);
 app.use('/api/empPay', empPaymentRoute);
 app.use('/api/user', authRoute);
 app.use('/api/appointment', appointmentRoute);
+app.use('/api/emp_bank_Account', emp_bank_Account);
+app.use('/api/paymentBasedAmount', paymentBasedAmount);
 
 mongoose.connect(process.env.DB_CONNECTION, { useUnifiedTopology: true, useNewUrlParser: true })
     .then((result) => console.log('connected to database'))
